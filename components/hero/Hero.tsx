@@ -48,7 +48,7 @@ export function Hero() {
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
-        <Image src={"/wave.png"} alt="hero wave image" className=" w-full h-screen" fill />
+        <Image src={"/wave.png"} alt="hero wave image" className=" -z-10 w-full h-screen" fill />
         <div className="mx-auto w-full max-w-7xl min-h-[100vh]">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12 items-center">
             {/* Left side content */}
