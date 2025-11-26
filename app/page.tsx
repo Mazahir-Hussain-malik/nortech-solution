@@ -9,11 +9,21 @@ import { TestimonialsSection } from "@/components/testimonials/testimonials-sect
 export default function Home() {
   return (
     <div className="min-h-screen items-center justify-center bg-[#FFFFFF] font-sans">
+      <section id="home">
       <Hero />
+      </section>
+      <section id="services">
       <ServicesSection />
+      </section>
+      <section id="about">
       <AboutSection />
+      </section>
+      <section id="projects">
       <ProjectsSection />
+      </section>
+      <section id="contact">
       <TestimonialsSection /> 
+      </section>
     </div>
   );
 }

@@ -67,7 +67,7 @@ const ServicesSection: React.FC = () => {
   })
 
   return (
-    <div ref={ref} className="relative w-full overflow-hidden bg-white py-16 md:py-24">
+    <div ref={ref} className="relative w-full overflow-hidden bg-white py-16 md:py-24" id="services">
       {/* Curved blob background - top left */}
       <div className="absolute -top-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-purple-200/30 to-pink-200/20 blur-3xl"></div>
 

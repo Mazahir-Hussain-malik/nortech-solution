@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import { ChevronDown, Menu, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 interface NavItem {
   label: string;
@@ -13,61 +14,60 @@ interface NavItem {
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [activeLink, setActiveLink] = useState<string>("Home");
+  const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
   const navItems: NavItem[] = [
-    { label: "Home", href: "#" },
-    { label: "Services", href: "#" },
-    { label: "About", href: "#" },
-    { label: "Project", href: "#", hasDropdown: true },
-    { label: "Contact", href: "#" },
+    { label: "Home", href: "/" },
+    { label: "Services", href: "services" },
+    { label: "About", href: "about" },
+    { label: "Project", href: "projects", hasDropdown: true },
+    { label: "Contact", href: "contact" },
   ];
+
+  const dropdownItems = [
+    { label: "Graphic Design", href: "/graphic-design" },
+    { label: "Web Development", href: "/web-development" },
+    { label: "Geographic Information System", href: "/gis" },
+    { label: "App Development", href: "/app-development" },
+    { label: "E-commerce", href: "/ecommerce" },
+    { label: "IELTS", href: "/ielts" },
+    { label: "Digital Marketing", href: "/digital-marketing" },
+    { label: "Beautician", href: "/beautician" },
+  ];
+
+  const scrollToSection = (id: string, label: string) => {
+    const element = document.getElementById(id);
+    if (!element) return;
+
+    const yOffset = -80;
+    const y =
+      element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+
+    window.scrollTo({ top: y, behavior: "smooth" });
+    setIsOpen(false);
+    setActiveLink(label);
+  };
 
   const containerVariants: Variants = {
     hidden: { opacity: 0, y: -20 },
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
+      transition: { duration: 0.5, ease: "easeOut" },
     },
   };
 
   const menuItemVariants: Variants = {
     hidden: { opacity: 0, x: -10 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut",
-      },
-    },
-    hover: {
-      x: 4,
-      transition: { duration: 0.2 },
-    },
+    visible: { opacity: 1, x: 0 },
+    hover: { x: 4 },
   };
 
   const mobileMenuVariants: Variants = {
     hidden: { opacity: 0, height: 0 },
-    visible: {
-      opacity: 1,
-      height: "auto",
-      transition: {
-        duration: 0.3,
-        ease: "easeOut",
-      },
-    },
-    exit: {
-      opacity: 0,
-      height: 0,
-      transition: {
-        duration: 0.2,
-        ease: "easeIn",
-      },
-    },
+    visible: { opacity: 1, height: "auto" },
+    exit: { opacity: 0, height: 0 },
   };
 
   return (
@@ -80,140 +80,139 @@ export function Navbar() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <div>
-            <Image
-              src="/logo.png"
-              width={150}
-              height={40}
-              className="w-[150px]"
-              alt="logo"
-            />
-          </div>
+          <Link href={"/"}>
+            <Image src="/logo.png" width={150} height={40} alt="logo" />
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-2">
             {navItems.map((item, i) => (
-              <motion.div
-                key={item.label}
-                variants={menuItemVariants}
-                initial="hidden"
-                animate="visible"
-                transition={{ delay: i * 0.05 }}
-              >
-                <motion.button
-                  className="relative px-3 py-2 text-sm font-medium text-gray-700 group"
-                  whileHover="hover"
-                  variants={menuItemVariants}
-                >
-                  <span className="flex items-center gap-1">
-                    {item.label}
-                    {item.hasDropdown && (
-                      <motion.span
-                        whileHover={{ rotate: 180 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <ChevronDown size={16} />
-                      </motion.span>
-                    )}
-                  </span>
+              <div key={item.label} className="relative group">
+                {!item.hasDropdown ? (
+                  <motion.button
+                    onClick={() => scrollToSection(item.href, item.label)}
+                    variants={menuItemVariants}
+                    initial="hidden"
+                    animate="visible"
+                    whileHover="hover"
+                    transition={{ delay: i * 0.05 }}
+                    className="relative px-3 py-2 text-sm font-medium text-gray-700"
+                  >
+                    <span>{item.label}</span>
 
-                  {/* Underline animation */}
-                  <motion.div
-                    className="absolute bottom-1 left-0 h-0.5 bg-gradient-to-r from-orange-500 to-orange-600"
-                    initial={{ width: 0 }}
-                    whileHover={{ width: "100%" }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </motion.button>
-              </motion.div>
+                    <motion.div
+                      className="absolute bottom-1 left-0 h-0.5 bg-[#E97D26]"
+                      initial={{ width: 0 }}
+                      animate={{
+                        width: activeLink === item.label ? "100%" : undefined,
+                      }}
+                      whileHover={{ width: "100%" }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </motion.button>
+                ) : (
+                  <>
+                    <motion.button
+                      variants={menuItemVariants}
+                      initial="hidden"
+                      animate="visible"
+                      whileHover="hover"
+                      transition={{ delay: i * 0.05 }}
+                      className="relative px-3 py-2 text-sm font-medium text-gray-700 flex items-center gap-1"
+                    >
+                      {item.label}
+                      <ChevronDown size={16} />
+
+                      <motion.div
+                        className="absolute bottom-1 left-0 h-0.5 bg-[#E97D26]"
+                        initial={{ width: 0 }}
+                        animate={{
+                          width: activeLink === item.label ? "100%" : undefined,
+                        }}
+                        whileHover={{ width: "100%" }}
+                        transition={{ duration: 0.3 }}
+                      />
+                    </motion.button>
+
+                    {/* Dropdown */}
+                    <div className="absolute top-full left-0 mt-2 w-64 bg-white rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                      {dropdownItems.map((drop) => (
+                        <Link
+                          key={drop.label}
+                          href={drop.href}
+                          onClick={() => setActiveLink(item.label)}
+                          className="block px-4 py-3 text-sm text-gray-700 hover:bg-orange-50"
+                        >
+                          {drop.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </div>
             ))}
           </div>
 
-          {/* Desktop CTA */}
-          <motion.div className="hidden md:flex">
-            <motion.button
-              className="px-6 py-2.5 border-2 border-[#E97D26] rounded-tr-[30px] rounded-bl-[30px] font-semibold text-sm hover:bg-orange-50 transition-colors duration-200"
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "0 8px 16px rgba(249, 115, 22, 0.15)",
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
+          {/* CTA */}
+          <div className="hidden md:flex">
+            <button className="px-6 py-2.5 border-2 border-[#E97D26] rounded-tr-[30px] rounded-bl-[30px] font-semibold text-sm">
               Enroll Now
-            </motion.button>
-          </motion.div>
+            </button>
+          </div>
 
-          {/* Mobile Menu Button */}
-          <motion.button
-            className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
-            onClick={() => setIsOpen((prev) => !prev)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <AnimatePresence mode="wait">
-              {isOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <X size={24} className="text-gray-700" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <Menu size={24} className="text-gray-700" />
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.button>
+          {/* Mobile Toggle */}
+          <button className="md:hidden" onClick={() => setIsOpen(!isOpen)}>
+            {isOpen ? <X /> : <Menu />}
+          </button>
         </div>
 
-        {/* Mobile Navigation */}
+        {/* Mobile Menu */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
-              className="md:hidden overflow-hidden bg-white border-t border-gray-200"
+              className="md:hidden bg-white border-t border-gray-200"
               variants={mobileMenuVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
             >
               <div className="px-4 py-4 space-y-2">
-                {navItems.map((item, i) => (
-                  <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: i * 0.05 }}
-                  >
-                    <motion.button
-                      className="w-full text-left px-4 py-3 text-gray-700 font-medium rounded-lg hover:bg-orange-50 transition-colors flex items-center justify-between"
-                      whileHover={{ x: 4 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      {item.label}
-                      {item.hasDropdown && (
-                        <ChevronDown size={16} className="text-orange-500" />
-                      )}
-                    </motion.button>
-                  </motion.div>
-                ))}
+                {navItems.map((item) => (
+                  <div key={item.label}>
+                    {item.hasDropdown ? (
+                      <>
+                        <button
+                          onClick={() => setDropdownOpen(!dropdownOpen)}
+                          className="w-full text-left px-4 py-3 rounded-lg flex justify-between items-center hover:bg-orange-50"
+                        >
+                          {item.label}
+                          <ChevronDown size={16} />
+                        </button>
 
-                {/* Mobile CTA */}
-                <motion.button
-                  className="w-full mt-4 px-6 py-3 border-2 border-orange-500 text-orange-600 font-semibold rounded-full text-sm hover:bg-orange-50 transition-colors"
-                  whileTap={{ scale: 0.95 }}
-                >
-                  Enroll Now
-                </motion.button>
+                        {dropdownOpen && (
+                          <div className="ml-4 space-y-2">
+                            {dropdownItems.map((drop) => (
+                              <Link
+                                key={drop.label}
+                                href={drop.href}
+                                className="block px-4 py-2 text-sm rounded-lg hover:bg-orange-50"
+                              >
+                                {drop.label}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <button
+                        onClick={() => scrollToSection(item.href, item.label)}
+                        className="w-full text-left px-4 py-3 rounded-lg hover:bg-orange-50"
+                      >
+                        {item.label}
+                      </button>
+                    )}
+                  </div>
+                ))}
               </div>
             </motion.div>
           )}

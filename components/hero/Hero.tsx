@@ -37,20 +37,18 @@ export function Hero() {
 
   return (
     <div ref={ref} className="relative min-h-screen overflow-hidden bg-gradient-to-b from-purple-100 via-pink-50 to-white">
-      {/* Animated background gradient overlay */}
       <motion.div
         className="absolute inset-0 bg-gradient-to-r from-purple-100/20 to-orange-100/20"
         animate={{ opacity: [0.3, 0.5, 0.3] }}
         transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
       />
-
-      {/* Main content container */}
       <motion.div
         className="relative z-10 flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 min-h-[100vh]"
         variants={containerVariants}
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
+        <Image src={"/wave.png"} alt="hero wave image" className=" w-full h-screen" fill />
         <div className="mx-auto w-full max-w-7xl min-h-[100vh]">
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-12 items-center">
             {/* Left side content */}
@@ -102,7 +100,7 @@ export function Hero() {
 
               {/* Image container */}
               <motion.div className="relative rounded-full" animate={{ y: [0, -10, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}>
-                <Image src="/maskingheroimage.png" alt="VR Experience - Nortech Solution" width={700} height={700} className="sm:w-[600px] sm:h-[600px] w-full" priority />
+                <Image src="/maskingheroimage.png" alt="VR Experience - Nortech Solution" width={500} height={500} className="sm:w-[500px] sm:h-[500px] w-full" priority />
               </motion.div>
 
               {/* Floating elements */}
