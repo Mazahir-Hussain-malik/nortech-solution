@@ -18,10 +18,10 @@ export function Navbar() {
   const [dropdownOpen, setDropdownOpen] = useState<boolean>(false);
 
   const navItems: NavItem[] = [
-    { label: "Home", href: "/" },
-    { label: "Services", href: "services" },
+    { label: "Home", href: "home" },
+    { label: "Project", href: "projects" },
     { label: "About", href: "about" },
-    { label: "Project", href: "projects", hasDropdown: true },
+    { label: "services", href: "services", hasDropdown: true },
     { label: "Contact", href: "contact" },
   ];
 
