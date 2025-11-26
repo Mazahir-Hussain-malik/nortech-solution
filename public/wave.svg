@@ -1,0 +1,13 @@
+<svg width="100%" height="100%" viewBox="0 0 1440 900" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="heroGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#601CFF" stop-opacity="0.1"></stop>
+      <stop offset="100%" stop-color="#FF790D" stop-opacity="0.22"></stop>
+    </linearGradient>
+  </defs>
+
+  <path d="M0 0H1440V650
+       C1100 720 800 800 500 780
+       C300 760 150 820 0 900
+       Z" fill="url(#heroGradient)"></path>
+</svg>
